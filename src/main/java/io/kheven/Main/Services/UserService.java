@@ -1,6 +1,8 @@
 package io.kheven.Main.Services;
 
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,11 +31,15 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public String login(String email, String password) {
+    public Map<String, Object> login(String email, String password) {
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             if (passwordEncoder.matches(password, user.get().getPassword())) {
-                return jwtUtil.generateToken(user.get().getUsername());
+                Map<String, Object> response = new HashMap<>();
+                response.put("username", user.get().getUsername());
+                response.put("email", user.get().getEmail());
+                response.put("token", jwtUtil.generateToken(user.get().getEmail()));
+                return response;
             }
         }
         return null;

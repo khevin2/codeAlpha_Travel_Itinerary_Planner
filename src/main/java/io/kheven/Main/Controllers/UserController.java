@@ -15,6 +15,9 @@ import io.kheven.Main.Dto.LoginRequest;
 import io.kheven.Main.Models.User;
 import io.kheven.Main.Services.UserService;
 
+import java.util.Map;
+import java.util.HashMap;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -30,12 +33,16 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@Validated @RequestBody LoginRequest req) {
-        String token = userService.login(req.username(), req.password());
-        if (token == null) {
-            return ResponseEntity.badRequest().body("Invalid credentials");
+        Map<String, Object> res = userService.login(req.email(), req.password());
+        if (res == null) {
+            return ResponseEntity.badRequest().body("{\"error\": true,\"message\":\"Invalid credentials\"}");
         }
+
+        Map<String, Object> successResponse = new HashMap<>();
+        successResponse.put("message", "Success");
+        successResponse.put("data", res);
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body("{\"message\":\" Success\",\"token\":\"" + token + "\"}");
+                .body(successResponse);
     }
 }
