@@ -26,7 +26,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Validated @RequestBody User user) {
-        // Add validation and error handling as needed
+      
         User savedUser = userService.registerUser(user);
         return ResponseEntity.ok(savedUser);
     }

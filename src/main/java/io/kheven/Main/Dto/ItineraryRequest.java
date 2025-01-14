@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ItineraryRequest {    
-        private String destinations; // e.g., "Paris, Rome, Berlin"
-        private String startDate; // e.g., "2024-06-01"
-        private String endDate; // e.g., "2024-06-15"
-        private String preference; // e.g., "Adventure"
+        private String destinations; 
+        private String startDate;
+        private String endDate; 
+        private String preference; 
 }

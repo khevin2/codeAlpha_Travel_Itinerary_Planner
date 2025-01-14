@@ -14,6 +14,8 @@ import io.kheven.Main.Dto.ItineraryRequest;
 import io.kheven.Main.Services.AIService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/itineraries")
@@ -24,19 +26,21 @@ public class ItineraryController {
     @PostMapping("/generate")
     public ResponseEntity<?> generateItinerary(@RequestBody ItineraryRequest request) {
         try {
-            String itineraryText = aiService.generateItinerary(
+            String itinerary = aiService.generateItinerary(
                     request.getDestinations(),
                     request.getStartDate(),
                     request.getEndDate(),
                     request.getPreference());
 
-            String parsedItenerary = aiService.parseItinerary(itineraryText);
+             Map<String, Object> response = new HashMap<>();
+        response.put("message", "Success");
+        response.put("itenerary", itinerary);
             return ResponseEntity.status(HttpStatus.OK)
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .body("{\"message\":\" Success\",\"itenerary\":\"" + parsedItenerary + "\"}");
+                    .body(response);
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error generating itinerary");
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 }
