@@ -55,7 +55,6 @@ public class AIService {
                         + "Make sure the response strictly follows this format.",
                 startDate, endDate, destinations, preference);
 
-        System.out.println("Prompt: " + prompt + "\n");
                 System.out.println("Model: " + OPENAI_API_MODEL + "\n" + "Temperature: " + OPENAI_API_TEMPERATURE + "\n" + "API URL: " + OPENAI_API_URL + "\n");
 
         MediaType mediaType = MediaType.parse("application/json");
@@ -75,8 +74,6 @@ public class AIService {
 
 
         String json = objectMapper.writeValueAsString(req);
-
-        System.out.println("JSON: " + json + "\n");
                 
         RequestBody body = RequestBody.create(json, mediaType);
         Request request = new Request.Builder()
@@ -112,8 +109,6 @@ public class AIService {
 
 
         String json = objectMapper.writeValueAsString(req);
-
-        System.out.println("json2: " + json + "\n");
 
         RequestBody body = RequestBody.create(json, mediaType);
         Request request = new Request.Builder()

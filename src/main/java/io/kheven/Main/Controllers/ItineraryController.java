@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.kheven.Main.Dto.ItineraryRequest;
+import io.kheven.Main.Dto.SaveItineraryRequest;
 import io.kheven.Main.Services.AIService;
+import io.kheven.Main.Services.IteneraryService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,6 +24,9 @@ import java.util.Map;
 public class ItineraryController {
     @Autowired
     private AIService aiService;
+
+    @Autowired
+    private IteneraryService iteneraryService;
 
     @PostMapping("/generate")
     public ResponseEntity<?> generateItinerary(@RequestBody ItineraryRequest request) {
@@ -43,4 +48,23 @@ public class ItineraryController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
+    @PostMapping("/save")
+    public ResponseEntity<?> saveItinerary(@RequestBody SaveItineraryRequest request) {
+        try {
+           
+            iteneraryService.commitItenaries(request);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Success");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    
 }
